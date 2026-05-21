@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ye ghadi chakjayegi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Full-screen dark layout ── */
+    html, body {
+      height: 100%;
+      background: #0c0b0a;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 3rem;
+      padding: 2rem;
+    }
+
+    /* ── Staggered fade-up on load ── */
+    .fade-1 { animation: fadeUp 1.4s cubic-bezier(0.22,1,0.36,1) both; }
+    .fade-2 { animation: fadeUp 1.4s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+    .fade-3 { animation: fadeUp 1.4s 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Headline ── */
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(2rem, 6vw, 4.2rem);
+      color: #e8e0d4;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+
+    /* ── Clock SVG container ── */
+    .clock-wrap {
+      width: clamp(200px, 44vw, 290px);
+      aspect-ratio: 1;
+      filter: drop-shadow(0 12px 40px rgba(0,0,0,0.8));
+    }
+    .clock-wrap svg { width: 100%; height: 100%; }
+
+    /* ── Reload button ── */
+    button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #c8bfb0;
+      background: transparent;
+      border: 1px solid #3a3530;
+      padding: 0.72rem 2.8rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.12s;
+    }
+    button:hover {
+      background: #c9b99a;
+      border-color: #c9b99a;
+      color: #0c0b0a;
+    }
+    button:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+
+  <!-- Main headline -->
+  <h1 class="fade-1">ye ghadi chakjayegi</h1>
+
+  <!--
+    Analog clock — permanently frozen at 10:10:30
+    Hour hand  : 10h 10min → 305° clockwise from 12 → rotate(215) in SVG coords
+    Minute hand: 10 min    → 60°  clockwise from 12 → rotate(-30) in SVG coords
+    Second hand: 30 sec    → 180° clockwise from 12 → rotate(90)  in SVG coords
+    (SVG 0° = 3 o'clock, so clock_angle - 90 = svg_angle)
+  -->
+  <div class="clock-wrap fade-2">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Outer bezel -->
+      <circle cx="100" cy="100" r="98" fill="#1b1916" stroke="#352f29" stroke-width="1.5"/>
+
+      <!-- Dial face -->
+      <circle cx="100" cy="100" r="88" fill="#131110" stroke="#252118" stroke-width="0.8"/>
+
+      <!-- Inner chapter ring -->
+      <circle cx="100" cy="100" r="82" fill="none" stroke="#1f1c19" stroke-width="1"/>
+
+      <!-- Hour markers (4 bold at 12/3/6/9, 8 thin at others) -->
+      <g stroke="#5a5248" stroke-linecap="round">
+        <line x1="100" y1="20"  x2="100" y2="31"  stroke-width="2.8"/> <!-- 12 -->
+        <line x1="180" y1="100" x2="169" y2="100" stroke-width="2.8"/> <!-- 3  -->
+        <line x1="100" y1="180" x2="100" y2="169" stroke-width="2.8"/> <!-- 6  -->
+        <line x1="20"  y1="100" x2="31"  y2="100" stroke-width="2.8"/> <!-- 9  -->
+        <!-- 1 --> <line x1="146.4" y1="29.8" x2="141.8" y2="37.8" stroke-width="1.2"/>
+        <!-- 2 --> <line x1="170.2" y1="62.4" x2="162.2" y2="67" stroke-width="1.2"/>
+        <!-- 4 --> <line x1="170.2" y1="137.6"x2="162.2" y2="133" stroke-width="1.2"/>
+        <!-- 5 --> <line x1="146.4" y1="170.2"x2="141.8" y2="162.2" stroke-width="1.2"/>
+        <!-- 7 --> <line x1="53.6"  y1="170.2"x2="58.2"  y2="162.2" stroke-width="1.2"/>
+        <!-- 8 --> <line x1="29.8"  y1="137.6"x2="37.8"  y2="133" stroke-width="1.2"/>
+        <!-- 10--> <line x1="29.8"  y1="62.4" x2="37.8"  y2="67" stroke-width="1.2"/>
+        <!-- 11--> <line x1="53.6"  y1="29.8" x2="58.2"  y2="37.8" stroke-width="1.2"/>
+      </g>
+
+      <!-- Minute dots (60 tiny dots) -->
+      <g fill="#2e2b27">
+        <circle cx="100" cy="22" r="1.2"/>
+        <circle cx="108.3" cy="22.3" r="0.9"/>
+        <circle cx="116.4" cy="23.3" r="0.9"/>
+        <circle cx="124.3" cy="25" r="0.9"/>
+        <circle cx="132" cy="27.4" r="0.9"/>
+        <circle cx="139.3" cy="30.6" r="0.9"/>
+        <!-- abbreviated — the hour markers dominate -->
+      </g>
+
+      <!-- HOUR HAND — rotate(215) = 305° clock time -->
+      <g transform="rotate(215 100 100)">
+        <!-- tail -->
+        <line x1="100" y1="100" x2="100" y2="116" stroke="#ccc5b8" stroke-width="3.8" stroke-linecap="round" opacity="0.35"/>
+        <!-- shaft -->
+        <line x1="100" y1="100" x2="100" y2="60"  stroke="#ccc5b8" stroke-width="3.8" stroke-linecap="round"/>
+      </g>
+
+      <!-- MINUTE HAND — rotate(-30) = 60° clock time -->
+      <g transform="rotate(-30 100 100)">
+        <line x1="100" y1="100" x2="100" y2="120" stroke="#b8b2a8" stroke-width="2.2" stroke-linecap="round" opacity="0.35"/>
+        <line x1="100" y1="100" x2="100" y2="28"  stroke="#b8b2a8" stroke-width="2.2" stroke-linecap="round"/>
+      </g>
+
+      <!-- SECOND HAND — rotate(90) = 180° clock time (pointing straight down) -->
+      <g transform="rotate(90 100 100)">
+        <line x1="100" y1="100" x2="100" y2="124" stroke="#a06030" stroke-width="1"   stroke-linecap="round" opacity="0.7"/>
+        <line x1="100" y1="100" x2="100" y2="24"  stroke="#a06030" stroke-width="1"   stroke-linecap="round"/>
+        <!-- second hand lollipop counterweight -->
+        <circle cx="100" cy="120" r="3" fill="#a06030" opacity="0.7"/>
+      </g>
+
+      <!-- Center pivot -->
+      <circle cx="100" cy="100" r="5"   fill="#c9b99a"/>
+      <circle cx="100" cy="100" r="2.2" fill="#0c0b0a"/>
+
+    </svg>
+  </div>
+
+  <!-- Comment button — reloads the page instantly, no popup -->
+  <button class="fade-3" onclick="location.reload()">Comment</button>
+
+</body>
+</html>
